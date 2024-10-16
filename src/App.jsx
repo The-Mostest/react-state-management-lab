@@ -3,7 +3,6 @@ import { useState } from 'react'
 import './App.css'
 
 const App = () => {
-
   const [team, setTeam] = useState([])
   const [money, setMoney] = useState(100)
   const [strength, setStrength] = useState(0)
@@ -83,17 +82,22 @@ const App = () => {
     ]
   )
 
-  
+
   const handleAddFighter = (newFighter) => {
     const fighterArray = [...team, newFighter]
     setTeam(fighterArray)
-    
+
     setMoney(money - newFighter.price)
 
-    // const strengthCopy = [...strength, newFighter.strength]; // Assuming 'strength' is an array
-    // const totalStrength = strengthCopy.reduce((acc, fighterStrength) => acc + fighterStrength, 0); // Sum all the strengths
-    // setStrength(totalStrength); // Set the new total strength
+    // const strengthCopy = [...strength, newFighter.strength]
+    // const totalStrength = strengthCopy.reduce((acc, fighterStrength) => acc + fighterStrength, 0)
+    // setStrength(totalStrength)
 
+    let newStrength = fighterArray.reduce((acc, fighter) => {
+      return acc + fighter.strength
+    }, 0)
+    setStrength(newStrength)
+    // setStrength(strength + newFighter.strength)
     setAgility(agility + newFighter.agility)
   }
 
@@ -101,33 +105,36 @@ const App = () => {
   return (
 
     <>
-      <h2>Money Left: £{money}</h2>
       <h2>Team: </h2>
+      {team.length > 0 ?
+        <ul>
+          {team.map((member, idx) => (
 
-      <ul>
-        {team.map((member, idx) => (
+            <li key={idx}>
+              <p>
+                {member.name}
+              </p>
+              <p>
+                Price: £{member.price}
+              </p>
+              <p>
 
-          <li key={idx}>
-            <p>
-              {member.name}
-            </p>
-            <p>
-              Price: £{member.price}
-            </p>
-            <p>
-
-              Strength: {member.strength}
-            </p>
-            <p>
-              Agility: {member.agility}
-            </p>
-          </li>
-
-
-        ))}
-      </ul>
+                Strength: {member.strength}
+              </p>
+              <p>
+                Agility: {member.agility}
+              </p>
+            </li>
 
 
+          ))}
+        </ul> :
+        <p> Pick some Team Members
+          <br /> to battle the Zombie horde!
+        </p>
+      }
+
+      <h2>Money Left: £{money}</h2>
       <h2>Team Strength: {strength}</h2>
       <h2>Team Agility: {agility}</h2>
 
